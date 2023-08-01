@@ -1,10 +1,9 @@
-###################### Libraries###################################
+################################ Libraries##################################
 library(ggplot2)
-################################ Question 1 ####################################
+################################ Step 1 ####################################
 set.seed(2190903)
 n <- 100 ## on change n = 1000 pour l'étape 7
 datagen <- rexp(n, rate = 2)
-
 
 ## Plot histogramme des données:
 
@@ -14,7 +13,7 @@ ggplot(data = as.data.frame(datagen), aes(x = datagen)) +
   xlab("datagen") +
   labs(title = "Histogramme des données Datagen")
 
-################################ Question 2 ####################################
+################################ Step 2 ####################################
 
 bsample <- datagen[sample(n, n, replace = TRUE)]
 
@@ -25,7 +24,7 @@ ggplot(as.data.frame(bsample), aes(x = bsample)) +
   xlab("bsample") +
   labs(title = "Histogramme des données bsample")
 
-################################ Question 3 ####################################
+################################ Step 3 ####################################
 
 ## génération de l'échantillon bootstrap
 m = 100000
@@ -35,7 +34,7 @@ for(i in 1:m){
   bmatrix_sample[i,] <- bsample
 }
 
-################################ 3.b ###########################################
+################################ Step 3.bis #################################
 
 ## la moyenne de l'échantillon bootstrap
 mean_bms <- rep(NA,n)
@@ -51,10 +50,7 @@ ggplot(as.data.frame(mean_bms), aes(x = mean_bms)) +
   xlab("bootstrap de l'échantillon") +
   labs(title = "Histogramme des données après bootstraping")
   
-
-
-
-################################ Question 4 ####################################
+################################ Step 4 ####################################
 
 ## calcul des quantiles des moyennes des échantillons bootstrap
 
@@ -69,25 +65,23 @@ ggplot(as.data.frame(mean_bms), aes(x = mean_bms)) +
   xlab("bootstrap de l'échantillon") +
   labs(title = "Histogramme des données après bootstraping")
 
-################################ Question 5 ####################################
+################################ Step 5 ####################################
 
 ## courbe des quantiles empiriques 
 ##plot(ppoints(1000),sort(datagen), pch = 20)
-
 
 ## bootstraping des quatiles empiriques
 bootstrap_qe <- matrix(NA,nrow = m, ncol = n)
 for(i in 1:m){
   bootstrap_qe[i,] <- sort(bmatrix_sample[i,])
 }
-bootstrap_qe
+##bootstrap_qe
 
 ## interval de confiance pour chaque quantile empirique:
 ## on crée une matrice de 2 colonnes, une contenant les quantile de niveau 2.5%
 ## l'autre contenant les quantiles de niveau 97.5%
 
 interval_confiance_qe <- matrix(NA,nrow = n, ncol = 2)
-
 
 for(i in 1:n){
   interval_confiance_qe[i,1] <- quantile(bootstrap_qe[,i], probs = 0.025)
@@ -96,8 +90,7 @@ for(i in 1:n){
 colnames(interval_confiance_qe) <- c("quantile_2.5%", "quatile_97.5%")
 
 
-
-################################ Question 6 ####################################
+################################ Step 6 ####################################
 
 plot(ppoints(n),sort(datagen), pch = 20)
 
@@ -110,9 +103,10 @@ ggplot(data = as.data.frame(datagen), aes(x = ppoints(n), y = sort(datagen)))+
   labs(title = "Courbe des quantiles empiriques")
   
 
-############################### Question 7 #####################################
+############################### Step 7 #####################################
 
-## on répète le tout mais pour n = 1000
+## on répète le tout mais pour n = 1000 pour distinguer la différence sur
+## l'intrevalle de confiance
 
 
 
